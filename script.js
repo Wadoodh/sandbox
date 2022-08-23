@@ -9,7 +9,7 @@ form.addEventListener("click", (e) => {
 
   if (!next && !previous) return;
   if (next) currentStep += 1;
-  if (previous) currentStep += 1;
+  if (previous) currentStep -= 1;
 
   console.log("next or previous clicked");
 
