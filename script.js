@@ -1,35 +1,32 @@
-// const formSteps = [...document.querySelectorAll("[data-step]")];
 const form = document.getElementById("form");
 const formSteps = [...document.getElementsByClassName("step")];
+let currentStep = 0;
 
 // step 1 - form elements
 const userName = document.getElementById("name");
 const email = document.getElementById("email");
 
 // step 2 - form elements
-const phone = document.getElementById("phone");
-const company = document.getElementById("company");
+const serviceCheckboxes = document.querySelectorAll(`input[type="cdheckbox"]`);
 
 // step 3 - form elements
 const budgetRadios = document.querySelectorAll(`input[name="budget"]`);
-const serviceRadios = document.querySelectorAll(`input[name="services"]`);
 
+// step 4 - form elements
+const phone = document.getElementById("phone");
+const company = document.getElementById("company");
+
+// initiate radio and checkbox listeners
 addRadioListeners();
-
-let currentStep = 0;
-// let stepIncrementor = 0;
+addCheckboxListeners();
 
 form.addEventListener("click", (e) => {
-  // let stepIncrementor = 0;
-
   const next = e.target.classList.contains("next");
   const previous = e.target.classList.contains("previous");
 
   if (!next && !previous) return;
 
   if (previous) {
-    // stepIncrementor -= 1;
-    // currentStep += stepIncrementor;
     currentStep -= 1;
     showCurrentStep();
     return;
@@ -55,6 +52,21 @@ form.addEventListener("click", (e) => {
   }
 });
 
+// show current step in form
+
+function showCurrentStep() {
+  formSteps.forEach((step, index) => {
+    step.classList.toggle("active", index === currentStep);
+  });
+}
+
+function goToNextStep() {
+  currentStep += 1;
+  showCurrentStep();
+}
+
+// set error in each step
+
 const setError = (element, message) => {
   const inputControl = element.parentElement;
   const errorMessage = inputControl.querySelector(".error-message");
@@ -72,6 +84,8 @@ const setError = (element, message) => {
   element.classList.add("input-error");
   element.classList.remove("input-success");
 };
+
+// set success in each step and remove error message
 
 const setSuccess = (element) => {
   const inputControl = element.parentElement;
@@ -91,12 +105,6 @@ const setSuccess = (element) => {
 
   element.classList.add("input-success");
 };
-
-function showCurrentStep() {
-  formSteps.forEach((step, index) => {
-    step.classList.toggle("active", index === currentStep);
-  });
-}
 
 // validation steps
 
@@ -134,13 +142,6 @@ function validateStepFour() {
   goToNextStep();
 }
 
-function goToNextStep() {
-  // stepIncrementor += 1;
-  // currentStep += stepIncrementor;
-  currentStep += 1;
-  showCurrentStep();
-}
-
 // validation functions
 
 function addRadioListeners() {
@@ -148,6 +149,16 @@ function addRadioListeners() {
     budgetRadios[radio].onclick = function () {
       if (this.value) {
         setSuccess(budgetRadios[0].parentElement);
+      }
+    };
+  }
+}
+
+function addCheckboxListeners() {
+  for (checkbox in serviceCheckboxes) {
+    serviceCheckboxes[checkbox].onclick = function () {
+      if (this.value) {
+        setSuccess(serviceCheckboxes[0].parentElement);
       }
     };
   }
@@ -171,50 +182,3 @@ function validateNameInput() {
     return true;
   }
 }
-
-/* inputControl.classList.add("error");
-  inputControl.classList.remove("success"); */
-
-/* const currentInputs = [...formSteps[currentStep].querySelectorAll("input")];
-  const allInputsValid = currentInputs.every((input) => input.reportValidity());
-
-  if (allInputsValid) {
-    currentStep += stepIncrementor;
-    showCurrentStep();
-  } */
-
-/* const currentInputs = [...formSteps[currentStep].querySelectorAll("input")];
-  const allInputsValid = currentInputs.every((input) => input.reportValidity()); */
-
-/* function validateInputs(step) {
-  if (step === 0) validateFormStepOne();
-  if (step === 1) validateFormStepTwo();
-  if (step === 2) validateFormStepThree();
-  if (step === 3) validateFormStepFour();
-} */
-
-/* if (next) {
-    currentStep === 0 && validateStepOne();
-    currentStep === 1 && validateStepTwo();
-    currentStep === 2 && validateStepThree();
-    currentStep === 3 && validateStepFour();
-  } */
-
-/* if (next && currentStep < formSteps.length) {
-    if (currentStep === 0) {
-      validateStepOne();
-      return;
-    }
-    if (currentStep === 1) {
-      validateStepTwo();
-      return;
-    }
-    if (currentStep === 2) {
-      validateStepThree();
-      return;
-    }
-    if (currentStep === 3) {
-      validateStepFour();
-      return;
-    }
-  } */
