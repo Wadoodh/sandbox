@@ -6,6 +6,16 @@ const formSteps = [...document.getElementsByClassName("step")];
 const userName = document.getElementById("name");
 const email = document.getElementById("email");
 
+// step 2 - form elements
+const phone = document.getElementById("phone");
+const company = document.getElementById("company");
+
+// step 3 - form elements
+const budgetRadios = document.querySelectorAll(`input[name="budget"]`);
+const serviceRadios = document.querySelectorAll(`input[name="services"]`);
+
+addRadioListeners();
+
 let currentStep = 0;
 // let stepIncrementor = 0;
 
@@ -41,7 +51,6 @@ form.addEventListener("click", (e) => {
       validateStepFour();
       break;
     default:
-      console.log("end of switch statement...");
       break;
   }
 });
@@ -52,6 +61,14 @@ const setError = (element, message) => {
 
   errorMessage.innerText = message;
   errorMessage.style.display = "block";
+
+  if (
+    element?.childNodes[0]?.type === "radio" ||
+    element?.childNodes[0]?.type === "checkbox"
+  )
+    return;
+
+  // only change input if text, email, textarea, phone, number
   element.classList.add("input-error");
   element.classList.remove("input-success");
 };
@@ -62,8 +79,17 @@ const setSuccess = (element) => {
 
   errorMessage.innerText = "";
   errorMessage.style.display = "none";
-  element.classList.add("input-success");
   element.classList.remove("input-error");
+
+  if (
+    element?.childNodes[0]?.type === "radio" ||
+    element?.childNodes[0]?.type === "checkbox"
+  )
+    return;
+
+  // only change input if text, email, textarea, phone, number
+
+  element.classList.add("input-success");
 };
 
 function showCurrentStep() {
@@ -72,6 +98,8 @@ function showCurrentStep() {
   });
 }
 
+// validation steps
+
 function validateStepOne() {
   const checkName = validateNameInput();
   if (!checkName) return;
@@ -79,11 +107,29 @@ function validateStepOne() {
 }
 
 function validateStepTwo() {
-  goToNextStep();
+  const checkboxes = [...document.querySelectorAll('input[type="checkbox"]')];
+  const checkAtLeastOne = checkboxes.some((input) => input.checked);
+
+  if (checkAtLeastOne) {
+    goToNextStep();
+    setSuccess(budgetRadios[0].parentElement);
+  } else {
+    setError(checkboxes[0].parentElement, "Select at least one option");
+  }
 }
+
 function validateStepThree() {
-  goToNextStep();
+  const isItChecked = document.querySelector('input[name="budget"]:checked');
+
+  if (isItChecked !== null) {
+    setSuccess(budgetRadios[0].parentElement);
+    goToNextStep();
+    return;
+  } else {
+    setError(budgetRadios[0].parentElement, "Select a radio option");
+  }
 }
+
 function validateStepFour() {
   goToNextStep();
 }
@@ -95,10 +141,23 @@ function goToNextStep() {
   showCurrentStep();
 }
 
+// validation functions
+
+function addRadioListeners() {
+  for (radio in budgetRadios) {
+    budgetRadios[radio].onclick = function () {
+      if (this.value) {
+        setSuccess(budgetRadios[0].parentElement);
+      }
+    };
+  }
+}
+
 userName.addEventListener("blur", validateNameInput);
-userName.addEventListener("input", () => {
-  if (userName.classList.contains("input-error")) validateNameInput();
-});
+userName.addEventListener(
+  "input",
+  () => userName.classList.contains("input-error") && validateNameInput()
+);
 
 function validateNameInput() {
   if (userName.value.trim() === "") {
