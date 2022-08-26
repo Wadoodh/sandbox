@@ -1,5 +1,6 @@
+// const formSteps = [...document.querySelectorAll("[data-step]")];
 const form = document.getElementById("form");
-const formSteps = [...document.querySelectorAll("[data-step]")];
+const formSteps = [...document.getElementsByClassName("step")];
 
 // step 1 - form elements
 const userName = document.getElementById("name");
@@ -9,7 +10,6 @@ let currentStep = 0;
 // let stepIncrementor = 0;
 
 form.addEventListener("click", (e) => {
-  console.log("form top... ", currentStep);
   // let stepIncrementor = 0;
 
   const next = e.target.classList.contains("next");
@@ -24,6 +24,8 @@ form.addEventListener("click", (e) => {
     showCurrentStep();
     return;
   }
+
+  // function will only continue if next is pressed
 
   switch (true) {
     case currentStep === 0:
@@ -94,6 +96,9 @@ function goToNextStep() {
 }
 
 userName.addEventListener("blur", validateNameInput);
+userName.addEventListener("input", () => {
+  if (userName.classList.contains("input-error")) validateNameInput();
+});
 
 function validateNameInput() {
   if (userName.value.trim() === "") {
