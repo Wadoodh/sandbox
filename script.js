@@ -1,4 +1,3 @@
-import { initializeInputListeners } from "./inputListeners";
 const form = document.getElementById("form");
 const formSteps = [...document.getElementsByClassName("step")];
 let currentStep = 0;
@@ -16,8 +15,6 @@ const budgetRadios = document.querySelectorAll(`input[name="budget"]`);
 // step 4 - form elements
 const phone = document.getElementById("phone");
 const company = document.getElementById("company");
-
-initializeInputListeners(userName, email, phone);
 
 // initiate radio and checkbox listeners
 addRadioListeners();
@@ -182,7 +179,6 @@ function addCheckboxListeners() {
   }
 }
 
-/* 
 // on blur
 userName.addEventListener("blur", validateNameInput);
 email.addEventListener("blur", validateEmailInput);
@@ -199,17 +195,17 @@ phone.addEventListener(
 email.addEventListener(
   "input",
   () => inputHasError(email) && validateEmailInput()
-); */
+);
 
 // utility functions
 
-/* function inputHasError(input) {
+function inputHasError(input) {
   return input.classList.contains("input-error");
-} */
+}
 
 // validation functions
 
-/* function validateNameInput() {
+function validateNameInput() {
   if (userName.value.trim() === "") {
     setError(userName, "name is required");
     return false;
@@ -240,4 +236,4 @@ function validatePhoneInput() {
     setSuccess(phone);
     return true;
   }
-} */
+}
