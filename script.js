@@ -7,7 +7,7 @@ const userName = document.getElementById("name");
 const email = document.getElementById("email");
 
 // step 2 - form elements
-const serviceCheckboxes = document.querySelectorAll(`input[type="cdheckbox"]`);
+const serviceCheckboxes = document.querySelectorAll(`input[type="checkbox"]`);
 
 // step 3 - form elements
 const budgetRadios = document.querySelectorAll(`input[name="budget"]`);
