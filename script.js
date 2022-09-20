@@ -44,9 +44,6 @@ form.addEventListener("click", (e) => {
     case currentStep === 2:
       validateStepThree();
       break;
-    case currentStep === 3:
-      validateStepFour();
-      break;
     default:
       break;
   }
@@ -59,6 +56,8 @@ function showCurrentStep() {
     step.classList.toggle("active", index === currentStep);
   });
 }
+
+// go to next step
 
 function goToNextStep() {
   currentStep += 1;
@@ -110,7 +109,13 @@ const setSuccess = (element) => {
 
 function validateStepOne() {
   const checkName = validateNameInput();
-  if (!checkName) return;
+  const checkEmail = validateEmailInput();
+
+  console.log("name " + checkName);
+  console.log("email " + checkEmail);
+
+  if (!checkName || !checkEmail) return;
+
   goToNextStep();
 }
 
@@ -138,11 +143,21 @@ function validateStepThree() {
   }
 }
 
-function validateStepFour() {
-  goToNextStep();
-}
+// last step validation on form submit
 
-// validation functions
+Webflow.push(function () {
+  $("form").submit(function () {
+    const checkNumber = validatePhoneInput();
+    if (!checkNumber) return false;
+
+    /* if (phone.value.length < 10) {
+      setError(phone, "Phone number must be at least 10 digits.");
+      return false;
+    } */
+  });
+});
+
+// event listeners
 
 function addRadioListeners() {
   for (radio in budgetRadios) {
@@ -164,11 +179,31 @@ function addCheckboxListeners() {
   }
 }
 
+// on blur
 userName.addEventListener("blur", validateNameInput);
+email.addEventListener("blur", validateEmailInput);
+
+// on keystroke only if error state active
 userName.addEventListener(
   "input",
-  () => userName.classList.contains("input-error") && validateNameInput()
+  () => inputHasError(userName) && validateNameInput()
 );
+phone.addEventListener(
+  "input",
+  () => inputHasError(phone) && validatePhoneInput()
+);
+email.addEventListener(
+  "input",
+  () => inputHasError(email) && validateEmailInput()
+);
+
+// utility functions
+
+function inputHasError(input) {
+  return input.classList.contains("input-error");
+}
+
+// validation functions
 
 function validateNameInput() {
   if (userName.value.trim() === "") {
@@ -179,6 +214,26 @@ function validateNameInput() {
     return false;
   } else {
     setSuccess(userName);
+    return true;
+  }
+}
+
+function validateEmailInput() {
+  if (!email.value.includes("@")) {
+    setError(email, "Enter a valid email address");
+    return false;
+  } else {
+    setSuccess(email);
+    return true;
+  }
+}
+
+function validatePhoneInput() {
+  if (phone.value.length < 10) {
+    setError(phone, "Phone number must be at least 10 digits");
+    return false;
+  } else {
+    setSuccess(phone);
     return true;
   }
 }
