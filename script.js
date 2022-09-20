@@ -111,9 +111,6 @@ function validateStepOne() {
   const checkName = validateNameInput();
   const checkEmail = validateEmailInput();
 
-  console.log("name " + checkName);
-  console.log("email " + checkEmail);
-
   if (!checkName || !checkEmail) return;
 
   goToNextStep();
