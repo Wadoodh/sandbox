@@ -1,5 +1,6 @@
 const form = document.getElementById("form");
 const formSteps = [...document.getElementsByClassName("step")];
+const stepsOverview = [...document.getElementsByClassName("form-step")];
 let currentStep = 0;
 
 // step 1 - form elements
@@ -16,7 +17,7 @@ const budgetRadios = document.querySelectorAll(`input[name="budget"]`);
 const phone = document.getElementById("phone");
 const company = document.getElementById("company");
 
-// initiate radio and checkbox listeners
+// initiate radio and checkbox listeners for steps 2 and 3
 addRadioListeners();
 addCheckboxListeners();
 
@@ -28,11 +29,14 @@ form.addEventListener("click", (e) => {
 
   if (previous) {
     currentStep -= 1;
+    handleCurrentStep(currentStep);
     showCurrentStep();
     return;
   }
 
   // function will only continue if next is pressed
+  // no need to call last step, as that is called through the Webflow.push function on page load
+  // the Webflow.push function is lower on the page
 
   switch (true) {
     case currentStep === 0:
@@ -61,7 +65,20 @@ function showCurrentStep() {
 
 function goToNextStep() {
   currentStep += 1;
+  handleCurrentStep(currentStep);
   showCurrentStep();
+}
+
+// handle current step
+
+function handleCurrentStep(liveStep) {
+  stepsOverview.forEach((step, index) => {
+    if (liveStep === index) {
+      step.classList.add("current-step");
+    } else {
+      step.classList.remove("current-step");
+    }
+  });
 }
 
 // set error in each step
@@ -146,11 +163,6 @@ Webflow.push(function () {
   $("form").submit(function () {
     const checkNumber = validatePhoneInput();
     if (!checkNumber) return false;
-
-    /* if (phone.value.length < 10) {
-      setError(phone, "Phone number must be at least 10 digits.");
-      return false;
-    } */
   });
 });
 
@@ -176,11 +188,11 @@ function addCheckboxListeners() {
   }
 }
 
-// on blur
+// validation on blur
 userName.addEventListener("blur", validateNameInput);
 email.addEventListener("blur", validateEmailInput);
 
-// on keystroke only if error state active
+// validation on keystroke only if input error class is active
 userName.addEventListener(
   "input",
   () => inputHasError(userName) && validateNameInput()
@@ -194,7 +206,7 @@ email.addEventListener(
   () => inputHasError(email) && validateEmailInput()
 );
 
-// utility functions
+// utility functions to check if input has the input error class
 
 function inputHasError(input) {
   return input.classList.contains("input-error");
@@ -216,7 +228,11 @@ function validateNameInput() {
 }
 
 function validateEmailInput() {
-  if (!email.value.includes("@")) {
+  const checkEmail =
+    /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+  const isEmailValid = checkEmail.test(email.value);
+
+  if (!isEmailValid) {
     setError(email, "Enter a valid email address");
     return false;
   } else {
