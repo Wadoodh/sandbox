@@ -153,7 +153,7 @@ function validateStepThree() {
     goToNextStep();
     return;
   } else {
-    setError(budgetRadios[0].parentElement, "Select a radio option");
+    setError(budgetRadios[0].parentElement, "Select a budget");
   }
 }
 
@@ -191,6 +191,7 @@ function addCheckboxListeners() {
 // validation on blur
 userName.addEventListener("blur", validateNameInput);
 email.addEventListener("blur", validateEmailInput);
+phone.addEventListener("blur", validatePhoneInput);
 
 // validation on keystroke only if input error class is active
 userName.addEventListener(
@@ -216,10 +217,10 @@ function inputHasError(input) {
 
 function validateNameInput() {
   if (userName.value.trim() === "") {
-    setError(userName, "name is required");
+    setError(userName, "Name is required");
     return false;
   } else if (userName.value.trim().length < 3) {
-    setError(userName, "name must be 3 characters or longer");
+    setError(userName, "Name must be 3 characters or longer");
     return false;
   } else {
     setSuccess(userName);
@@ -242,8 +243,14 @@ function validateEmailInput() {
 }
 
 function validatePhoneInput() {
-  if (phone.value.length < 10) {
-    setError(phone, "Phone number must be at least 10 digits");
+  const checkPhoneNumber = /^[0-9]*$/;
+  const isPhoneValid = checkPhoneNumber.test(phone.value);
+
+  if (!isPhoneValid) {
+    setError(phone, "Enter numbers only");
+    return false;
+  } else if (phone.value.length < 10) {
+    setError(phone, "Phone number must be at least 10 characters");
     return false;
   } else {
     setSuccess(phone);
