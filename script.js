@@ -250,7 +250,7 @@ function validatePhoneInput() {
     setError(phone, "Enter numbers only");
     return false;
   } else if (phone.value.length < 10) {
-    setError(phone, "Phone number must be at least 10 characters");
+    setError(phone, "Phone number must be 10 digits");
     return false;
   } else {
     setSuccess(phone);
