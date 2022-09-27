@@ -1,6 +1,4 @@
-# Multi step form with validation
-
-An exmaple showing a multi-step form with per-step validation.
+# Multi step form with per-step validation
 
 - Example Webflow site: https://multi-step-form-and-validation.webflow.io/
 
