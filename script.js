@@ -1,19 +1,21 @@
 const form = document.getElementById("form");
 const formSteps = [...document.getElementsByClassName("step")];
 const stepsOverview = [...document.getElementsByClassName("form-step")];
+
+// set current step to start form
 let currentStep = 0;
 
-// step 1 - form elements
+// step 1 - inputs
 const userName = document.getElementById("name");
 const email = document.getElementById("email");
 
-// step 2 - form elements
+// step 2 - inputs
 const serviceCheckboxes = document.querySelectorAll(`input[type="checkbox"]`);
 
-// step 3 - form elements
+// step 3 - inputs
 const budgetRadios = document.querySelectorAll(`input[name="budget"]`);
 
-// step 4 - form elements
+// step 4 - inputs (final)
 const phone = document.getElementById("phone");
 const company = document.getElementById("company");
 
@@ -21,6 +23,8 @@ const company = document.getElementById("company");
 addRadioListeners();
 addCheckboxListeners();
 
+// listen for click in form
+// only continue if click is on a next or previous button
 form.addEventListener("click", (e) => {
   const next = e.target.classList.contains("next");
   const previous = e.target.classList.contains("previous");
@@ -34,10 +38,7 @@ form.addEventListener("click", (e) => {
     return;
   }
 
-  // function will only continue if next is pressed
-  // no need to call last step, as that is called through the Webflow.push function on page load
-  // the Webflow.push function is lower on the page
-
+  // no need to call last step, as that is called through the Webflow.push function on page load, found below
   switch (true) {
     case currentStep === 0:
       validateStepOne();
@@ -54,7 +55,6 @@ form.addEventListener("click", (e) => {
 });
 
 // show current step in form
-
 function showCurrentStep() {
   formSteps.forEach((step, index) => {
     step.classList.toggle("active", index === currentStep);
@@ -62,7 +62,6 @@ function showCurrentStep() {
 }
 
 // go to next step
-
 function goToNextStep() {
   currentStep += 1;
   handleCurrentStep(currentStep);
@@ -70,7 +69,6 @@ function goToNextStep() {
 }
 
 // handle current step
-
 function handleCurrentStep(liveStep) {
   stepsOverview.forEach((step, index) => {
     if (liveStep === index) {
@@ -82,7 +80,6 @@ function handleCurrentStep(liveStep) {
 }
 
 // set error in each step
-
 const setError = (element, message) => {
   const inputControl = element.parentElement;
   const errorMessage = inputControl.querySelector(".error-message");
@@ -96,13 +93,12 @@ const setError = (element, message) => {
   )
     return;
 
-  // only change input if text, email, textarea, phone, number
+  // only change input if text, email, textarea, phone, or number
   element.classList.add("input-error");
   element.classList.remove("input-success");
 };
 
 // set success in each step and remove error message
-
 const setSuccess = (element) => {
   const inputControl = element.parentElement;
   const errorMessage = inputControl.querySelector(".error-message");
@@ -118,12 +114,10 @@ const setSuccess = (element) => {
     return;
 
   // only change input if text, email, textarea, phone, number
-
   element.classList.add("input-success");
 };
 
 // validation steps
-
 function validateStepOne() {
   const checkName = validateNameInput();
   const checkEmail = validateEmailInput();
@@ -158,7 +152,6 @@ function validateStepThree() {
 }
 
 // last step validation on form submit
-
 Webflow.push(function () {
   $("form").submit(function () {
     const checkNumber = validatePhoneInput();
@@ -167,7 +160,6 @@ Webflow.push(function () {
 });
 
 // event listeners
-
 function addRadioListeners() {
   for (radio in budgetRadios) {
     budgetRadios[radio].onclick = function () {
@@ -208,13 +200,11 @@ email.addEventListener(
 );
 
 // utility functions to check if input has the input error class
-
 function inputHasError(input) {
   return input.classList.contains("input-error");
 }
 
 // validation functions
-
 function validateNameInput() {
   if (userName.value.trim() === "") {
     setError(userName, "Name is required");
