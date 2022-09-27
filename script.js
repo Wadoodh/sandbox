@@ -219,9 +219,9 @@ function validateNameInput() {
 }
 
 function validateEmailInput() {
-  const checkEmail =
+  const emailPattern =
     /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-  const isEmailValid = checkEmail.test(email.value);
+  const isEmailValid = emailPattern.test(email.value);
 
   if (!isEmailValid) {
     setError(email, "Enter a valid email address i.e., mail@me.com");
@@ -233,8 +233,8 @@ function validateEmailInput() {
 }
 
 function validatePhoneInput() {
-  const checkPhoneNumber = /^[0-9]*$/;
-  const isPhoneValid = checkPhoneNumber.test(phone.value);
+  const phonePattern = /^[0-9]*$/;
+  const isPhoneValid = phonePattern.test(phone.value);
 
   if (!isPhoneValid) {
     setError(phone, "Enter numbers only");
