@@ -2,7 +2,7 @@
 
 - Example Webflow site: https://multi-step-form-and-validation.webflow.io/
 
-<img src="https://media.cleanshot.cloud/media/46844/9uFr1DO3T76uZ8Ld9TZVTdOZrSboZZE7nrkdYBpk.jpeg?Expires=1664322602&Signature=E~fUKH6U8w0jlqCxxpxNTL9Yw9avK5i0rPYCISI0tu0YljBIP9ZRqlB75SUDUVLOMS5oD2wri7oV7J6PqojJlxzViZevgH9zj6QjscT9Q5-5WP~xm0n1od7Fs5XKypZKzGpfRf46asvE4iPNmvsxJMeFzTg62qq6VuW48oDuZC43lExrAqU5AHk4Wvdibb7P6OLKY6cSkBo8NTGpCspiXgCwHwHbi58A1Mb8Z1t5lYGR6cdKeC1qdokz7zqcO6hBpIl6oEqvmXJLJ-JJlzzUzQPKTN66DxmJ067tDL8zzhb8T6wDaKHQgUgMX3WO943efcx20pGeNuew4XFeCO~RbA__&Key-Pair-Id=K269JMAT9ZF4GZ" alt="form example in Webflow" width="300">
+<img src="https://media.cleanshot.cloud/media/46844/9uFr1DO3T76uZ8Ld9TZVTdOZrSboZZE7nrkdYBpk.jpeg?Expires=1664322602&Signature=E~fUKH6U8w0jlqCxxpxNTL9Yw9avK5i0rPYCISI0tu0YljBIP9ZRqlB75SUDUVLOMS5oD2wri7oV7J6PqojJlxzViZevgH9zj6QjscT9Q5-5WP~xm0n1od7Fs5XKypZKzGpfRf46asvE4iPNmvsxJMeFzTg62qq6VuW48oDuZC43lExrAqU5AHk4Wvdibb7P6OLKY6cSkBo8NTGpCspiXgCwHwHbi58A1Mb8Z1t5lYGR6cdKeC1qdokz7zqcO6hBpIl6oEqvmXJLJ-JJlzzUzQPKTN66DxmJ067tDL8zzhb8T6wDaKHQgUgMX3WO943efcx20pGeNuew4XFeCO~RbA__&Key-Pair-Id=K269JMAT9ZF4GZ" alt="form example in Webflow" width="400">
 
 # How it works
 
