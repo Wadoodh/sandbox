@@ -234,7 +234,7 @@ function validateEmailInput() {
   const isEmailValid = checkEmail.test(email.value);
 
   if (!isEmailValid) {
-    setError(email, "Enter a valid email address");
+    setError(email, "Enter a valid email address i.e., mail@me.com");
     return false;
   } else {
     setSuccess(email);
