@@ -1,3 +1,4 @@
+// hello
 const form = document.getElementById("form");
 const formSteps = [...document.getElementsByClassName("step")];
 const stepsOverview = [...document.getElementsByClassName("form-step")];
