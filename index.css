@@ -1,0 +1,63 @@
+/* table,
+th,
+td {
+  padding: 5px;
+  border: 0.5px solid;
+  text-align: left;
+}
+
+td {
+  width: 250px;
+}
+
+th {
+  width: 250px;
+}
+
+tr {
+  display: flex;
+  flex-wrap: wrap;
+} */
+
+table {
+  border-spacing: 0px;
+}
+
+td,
+th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tr:hover {
+  background-color: #ddd;
+}
+
+th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: black;
+  color: white;
+}
+
+/* 
+
+
+key, text, itemType
+
+--
+
+key, text, itemType
+value
+
+--
+
+selector
+snippet
+
+*/
