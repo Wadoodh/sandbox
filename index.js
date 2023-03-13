@@ -66,26 +66,28 @@ figureThisOut(initialAudits[0].matchedAudits[0].details);
 // console.log(initialAudits[0].matchedAudits[6]);
 
 function figureThisOut(data) {
-  console.table(data.headings);
-  console.table(data.items);
+  /* console.table(data.headings);
+  console.table(data.items); */
+
+  console.log(data);
 
   let headerKeys = [];
   let tableHead = [];
-  let subItems = [];
+  let subItemHeadings = [];
   let itemOrValueTypes = [];
 
   data.headings.forEach((head) => {
-    // console.log();
     const headKey = head.key || head.url;
     const tableHeadTitle = head.text || head.label || " ";
 
     headerKeys.push(headKey);
     tableHead.push(tableHeadTitle);
-    subItems.push(head.subItemsHeading);
+    subItemHeadings.push(head.subItemsHeading);
     itemOrValueTypes.push(head.itemType || head.valueType);
   });
 
   function formatCellData(type, data) {
+    // console.table(data);
     let formatted = "";
 
     switch (type) {
@@ -96,7 +98,14 @@ function figureThisOut(data) {
         formatted = `${(data * 0.001).toFixed(3)} Seconds`;
         break;
       case "node":
-        formatted = data;
+        if (!data) break;
+
+        formatted = `
+        <div>
+          <span>
+            ${data?.nodeLabel}
+          </span>
+        </div>`;
         break;
       case "numeric":
         formatted = data;
@@ -125,7 +134,7 @@ function figureThisOut(data) {
 
   let table = document.querySelector("table");
   let tableTitles = Object.values(tableHead);
-  generateTable(table, data.items, itemOrValueTypes, subItems); // generate the table first
+  generateTable(table, data.items, itemOrValueTypes, subItemHeadings); // generate the table first
   generateTableHead(table, tableTitles);
 
   function generateTableHead(table, data) {
@@ -141,21 +150,71 @@ function figureThisOut(data) {
     }
   }
 
-  function generateTable(table, data, types, subItems) {
-    // console.log(subItems);
+  // console.log(data.items[0].subItems.items[0]);
 
-    data.forEach((item) => {
-      let row = table.insertRow();
+  function generateTable(table, data, types, subItemHeadings) {
+    data.forEach((rowData) => {
+      let newRow = table.insertRow();
+
       headerKeys.forEach((key, index) => {
-        // console.log(types[index]);
-        let cell = row.insertCell();
-        let cellData = formatCellData(types[index], item[key]);
-        let text = document.createTextNode(cellData || " ");
-        cell.appendChild(text);
+        createTableRow(newRow, rowData, key, index, types);
       });
+
+      if (rowData.hasOwnProperty("subItems")) {
+        rowData.subItems.items.forEach((subRowData) => {
+          let newRow = table.insertRow();
+
+          subItemHeadings.forEach((subHead, subIndex) => {
+            createTableRow(newRow, subRowData, subHead.key, subIndex, types);
+          });
+        });
+      }
+
+      /* if (rowData.hasOwnProperty("subItems")) {
+        rowData.subItems.items.forEach((rowData) => {
+          subItemHeadings.forEach((subItem, subIndex) => {
+            // console.log(subItem[innerItem.key]);
+            // console.log(rowData[subItem.key]);
+            let innerNewRow = table.insertRow();
+            createTableRow(innerNewRow, rowData, subItem.key, subIndex, types);
+            // generateTable();
+          });
+        });
+      } */
     });
   }
+
+  function createTableRow(newRow, rowData, key, index, types) {
+    console.log(rowData);
+
+    let cellToInsert = newRow.insertCell();
+    let cellInfo = formatCellData(types[index], rowData[key]);
+
+    if (types[index] === "node" && cellInfo) {
+      cellToInsert.innerHTML = cellInfo;
+    } else {
+      let dataToInsert = document.createTextNode(cellInfo || " ");
+      cellToInsert.appendChild(dataToInsert);
+    }
+
+    if (rowData.hasOwnProperty("subItems")) {
+      console.log("do something...");
+    }
+  }
 }
+
+/* // console.log(types[index]);
+        let cell = row.insertCell();
+        let cellData = formatCellData(types[index], item[key]);
+        // console.log(cellData);
+
+        if (types[index] === "node" && cellData) {
+          // console.log(cellData);
+          cell.innerHTML = cellData;
+        } else {
+          let dataToInsert = document.createTextNode(cellData || " ");
+          cell.appendChild(dataToInsert);
+        } */
 
 /* data.items.forEach((item) => {
     headerKeys.forEach((key) => {
