@@ -150,8 +150,6 @@ function figureThisOut(data) {
     }
   }
 
-  // console.log(data.items[0].subItems.items[0]);
-
   function generateTable(table, data, types, subItemHeadings) {
     data.forEach((rowData) => {
       let newRow = table.insertRow();
@@ -164,13 +162,28 @@ function figureThisOut(data) {
         rowData.subItems.items.forEach((subRowData) => {
           let newRow = table.insertRow();
 
-          subItemHeadings.forEach((subHead, subIndex) => {
-            createTableRow(newRow, subRowData, subHead.key, subIndex, types);
+          subItemHeadings.forEach((subHeading, index) => {
+            createTableRow(newRow, subRowData, subHeading.key, index, types);
           });
         });
       }
+    });
+  }
 
-      /* if (rowData.hasOwnProperty("subItems")) {
+  function createTableRow(newRow, rowData, key, index, types) {
+    let cellToInsert = newRow.insertCell();
+    let cellInfo = formatCellData(types[index], rowData[key]);
+
+    if (types[index] === "node" && cellInfo) {
+      cellToInsert.innerHTML = cellInfo;
+    } else {
+      let dataToInsert = document.createTextNode(cellInfo || " ");
+      cellToInsert.appendChild(dataToInsert);
+    }
+  }
+}
+
+/* if (rowData.hasOwnProperty("subItems")) {
         rowData.subItems.items.forEach((rowData) => {
           subItemHeadings.forEach((subItem, subIndex) => {
             // console.log(subItem[innerItem.key]);
@@ -181,27 +194,6 @@ function figureThisOut(data) {
           });
         });
       } */
-    });
-  }
-
-  function createTableRow(newRow, rowData, key, index, types) {
-    console.log(rowData);
-
-    let cellToInsert = newRow.insertCell();
-    let cellInfo = formatCellData(types[index], rowData[key]);
-
-    if (types[index] === "node" && cellInfo) {
-      cellToInsert.innerHTML = cellInfo;
-    } else {
-      let dataToInsert = document.createTextNode(cellInfo || " ");
-      cellToInsert.appendChild(dataToInsert);
-    }
-
-    if (rowData.hasOwnProperty("subItems")) {
-      console.log("do something...");
-    }
-  }
-}
 
 /* // console.log(types[index]);
         let cell = row.insertCell();
