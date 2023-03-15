@@ -51,7 +51,7 @@ initialAudits.forEach((audit) => {
 figureThisOut(initialAudits[0].matchedAudits[0].details);
 
 function figureThisOut(data) {
-  console.log(data);
+  if (!data) return;
 
   let headerKeys = [];
   let tableHead = [];
@@ -185,7 +185,8 @@ function figureThisOut(data) {
               subRowData,
               subHeading?.key || "none",
               index,
-              subItemTypes
+              subItemTypes,
+              true
             );
           });
         });
@@ -193,8 +194,16 @@ function figureThisOut(data) {
     });
   }
 
-  function createTableRow(newRow, rowData, key, index, types) {
+  function createTableRow(
+    newRow,
+    rowData,
+    key,
+    index,
+    types,
+    isSubItem = false
+  ) {
     let cellToInsert = newRow.insertCell();
+    if (isSubItem) cellToInsert.classList.add("sub-item");
     let cellInfo = formatCellData(
       types[index] || itemOrValueTypes[index],
       rowData[key]
