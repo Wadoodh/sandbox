@@ -42,20 +42,25 @@ initialAudits.forEach((audit) => {
   audit.matchedAudits.forEach((innerAudit) => {
     if (accumulatedAudits.indexOf(innerAudit.id) === -1) {
       accumulatedAudits.push(innerAudit.id);
-      document.querySelector(".overview").innerHTML = `
-      <h1>${innerAudit.title}</h1>
-      <p>${innerAudit.description}</p>
-      `;
-      // console.log(innerAudit);
       // figureThisOut(innerAudit.details);
     }
   });
 });
 
-figureThisOut(initialAudits[1].matchedAudits[0].details);
+figureThisOut(
+  initialAudits[0].matchedAudits[0],
+  initialAudits[0].matchedAudits[0].details
+);
 
-function figureThisOut(data) {
+function figureThisOut(main, data) {
   if (!data) return;
+
+  document.querySelector(".overview").innerHTML = `
+      <h1>${main.title}</h1>
+      <p>${main.description}</p>
+      `;
+
+  console.log(main);
 
   let headerKeys = [];
   let tableHead = [];
