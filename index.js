@@ -43,6 +43,7 @@ initialAudits.forEach((audit) => {
     if (accumulatedAudits.indexOf(innerAudit.id) === -1) {
       accumulatedAudits.push(innerAudit.id);
       // console.log(innerAudit);
+      // figureThisOut(innerAudit.details);
     }
   });
 });
@@ -80,11 +81,12 @@ function figureThisOut(data) {
     let formatted = "";
 
     switch (type) {
-      case "text":
+      /* case "text":
         formatted = data;
-        break;
+        break; */
       case "ms":
-        formatted = `${(data * 0.001).toFixed(3)} Seconds`;
+        // formatted = `${(data * 0.001).toFixed(3)} seconds`;
+        formatted = `${data.toFixed(0)} ms`;
         break;
       case "node":
         if (!data) break;
@@ -95,9 +97,9 @@ function figureThisOut(data) {
           </span>
         </div>`;
         break;
-      case "numeric":
+      /* case "numeric":
         formatted = data;
-        break;
+        break; */
       case "link":
         formatted = `
         <div>
@@ -105,13 +107,29 @@ function figureThisOut(data) {
         </div>`;
         break;
       case "url": // valueType
-        formatted = `<a href="${data}">${data}</a>`;
+        if (!data) break;
+        if (typeof data === "object") {
+          formatted = `<a href="${data.url}">${data.url}</a>`;
+        } else if (data.includes("https")) {
+          formatted = `<a href="${data}">${data}</a>`;
+        } else {
+          formatted = data;
+        }
+        break;
+      case "source-location": // valueType source-location
+        formatted = `<a href="${data.location.url}">${data.location.url}</a>`;
         break;
       case "code": // valueType
-        formatted = data;
+        if (!data) break;
+        if ((data && data.includes("https")) || data.includes("webpack")) {
+          formatted = `<a href="${data}">${data}</a>`;
+        } else {
+          formatted = data;
+        }
         break;
       case "bytes": // valueType
-        formatted = `${(data * 0.000001).toFixed(3)} MBs`;
+        if (!data) return "";
+        formatted = `${(data * 0.000976562).toFixed(2)} KiB`;
         break;
       case "timespanMs": // valueType
         formatted = `${data} ms`;
@@ -125,17 +143,19 @@ function figureThisOut(data) {
 
   let table = document.querySelector("table");
   let tableTitles = Object.values(tableHead);
+
   generateTable(
     table,
     data.items,
     itemOrValueTypes,
     subItemHeadings,
     subItemTypes
-  ); // generate the table first
+  );
+
+  // generate the table first
   generateTableHead(table, tableTitles);
 
   function generateTableHead(table, data) {
-    // console.log(data);
     let thead = table.createTHead();
     let row = thead.insertRow();
 
@@ -163,7 +183,7 @@ function figureThisOut(data) {
             createTableRow(
               newRow,
               subRowData,
-              subHeading.key,
+              subHeading?.key || "none",
               index,
               subItemTypes
             );
@@ -175,12 +195,18 @@ function figureThisOut(data) {
 
   function createTableRow(newRow, rowData, key, index, types) {
     let cellToInsert = newRow.insertCell();
-    let cellInfo = formatCellData(types[index], rowData[key]);
+    let cellInfo = formatCellData(
+      types[index] || itemOrValueTypes[index],
+      rowData[key]
+    );
 
     if (
       (types[index] === "node" ||
         types[index] === "url" ||
-        types[index] === "link") &&
+        types[index] === "link" ||
+        types[index] === "code" ||
+        rowData.hasOwnProperty("location") ||
+        rowData.hasOwnProperty("url")) &&
       cellInfo
     ) {
       cellToInsert.innerHTML = cellInfo;
