@@ -23,14 +23,18 @@ tr {
   color: inherit;
 } */
 
+.container {
+  max-width: 1040px;
+}
+
 table {
   border-spacing: 0px;
-  border: 1px solid #eef0f4;
+  border: 1px solid #ddd;
 }
 
 td,
 th {
-  /* border: 1px solid #ddd; */
+  border: 0.25px solid #ddd;
   padding: 8px;
 }
 

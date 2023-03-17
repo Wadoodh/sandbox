@@ -12,6 +12,7 @@ let finalAudits = [];
 let highPriorityAudits = [];
 let medPriorityAudits = [];
 let lowPriorityAudits = [];
+let container = document.querySelector(".container");
 
 let initialAudits = [];
 let accumulatedAudits = [];
@@ -42,25 +43,28 @@ initialAudits.forEach((audit) => {
   audit.matchedAudits.forEach((innerAudit) => {
     if (accumulatedAudits.indexOf(innerAudit.id) === -1) {
       accumulatedAudits.push(innerAudit.id);
-      // figureThisOut(innerAudit.details);
+      figureThisOut(innerAudit, innerAudit.details);
     }
   });
 });
 
-figureThisOut(
-  initialAudits[0].matchedAudits[0],
-  initialAudits[0].matchedAudits[0].details
-);
+/* figureThisOut(
+  initialAudits[0].matchedAudits[1],
+  initialAudits[0].matchedAudits[1].details
+); */
 
 function figureThisOut(main, data) {
   if (!data) return;
 
-  document.querySelector(".overview").innerHTML = `
-      <h1>${main.title}</h1>
-      <p>${main.description}</p>
-      `;
+  console.log(data);
 
-  console.log(main);
+  const title = document.createElement("h2");
+  const titleText = document.createTextNode(main.title);
+  title.appendChild(titleText);
+
+  const description = document.createElement("p");
+  const descriptionText = document.createTextNode(main.description);
+  description.appendChild(descriptionText);
 
   let headerKeys = [];
   let tableHead = [];
@@ -130,7 +134,7 @@ function figureThisOut(main, data) {
         break;
       case "code": // valueType
         if (!data) break;
-        if ((data && data.includes("https")) || data.includes("webpack")) {
+        if (data && data.includes("https")) {
           formatted = `<a href="${data}">${data}</a>`;
         } else {
           formatted = data;
@@ -150,7 +154,7 @@ function figureThisOut(main, data) {
     return formatted;
   }
 
-  let table = document.querySelector("table");
+  let table = document.createElement("table");
   let tableTitles = Object.values(tableHead);
 
   generateTable(
@@ -233,6 +237,11 @@ function figureThisOut(main, data) {
       cellToInsert.appendChild(dataToInsert);
     }
   }
+
+  // document.body.append(table);
+  container.append(title);
+  container.append(description);
+  container.append(table);
 }
 
 /************** TYPES *************/
