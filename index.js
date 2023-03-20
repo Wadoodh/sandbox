@@ -19,15 +19,23 @@ let accumulatedAudits = [];
 
 performance.auditRefs.forEach((audit) => {
   if (audit.hasOwnProperty("relevantAudits")) {
+    // create new property to store relevant audits
     audit.matchedAudits = [];
     initialAudits.push(audit);
   }
 });
 
-initialAudits.forEach((topAudit) => {
-  topAudit.relevantAudits.forEach((innerAudit) => {
-    if (audits[innerAudit].score === null) return;
-    topAudit.matchedAudits.push(audits[innerAudit]);
+initialAudits.forEach((auditCategory) => {
+  auditCategory.relevantAudits.forEach((audit) => {
+    if (audits[audit].score === null) return;
+
+    audits[audit].belongsToAuditCategory = {
+      acronym: auditCategory.acronym,
+      id: auditCategory.id,
+      weight: auditCategory.weight,
+    };
+
+    auditCategory.matchedAudits.push(audits[audit]);
   });
 });
 
@@ -39,32 +47,57 @@ initialAudits.forEach((audit) => {
   audit.matchedAudits.sort((a, z) => a.score - z.score);
 });
 
-initialAudits.forEach((audit) => {
-  audit.matchedAudits.forEach((innerAudit) => {
-    if (accumulatedAudits.indexOf(innerAudit.id) === -1) {
-      accumulatedAudits.push(innerAudit.id);
-      figureThisOut(innerAudit, innerAudit.details);
+// console.log(initialAudits);
+
+initialAudits.forEach((auditCategory) => {
+  auditCategory.matchedAudits.forEach((audit) => {
+    if (accumulatedAudits.indexOf(audit.id) === -1) {
+      accumulatedAudits.push(audit.id);
+
+      if (audit.score >= 0 && audit.score <= 0.49) {
+        // highPriorityAudits.push(audit);
+        createAudit(audit, audit.details);
+      } else if (audit.score >= 0.5 && audit.score <= 0.89) {
+        // medPriorityAudits.push(audit);
+        createAudit(audit, audit.details);
+      } else if (audit.score >= 0.9 && audit.score <= 1) {
+        // lowPriorityAudits.push(audit);
+        // createAudit(audit, audit.details);
+      }
+
+      // createAudit(audit, audit.details);
     }
   });
 });
 
-/* figureThisOut(
+// console.log(highPriorityAudits);
+
+/* createAudit(
   initialAudits[0].matchedAudits[1],
   initialAudits[0].matchedAudits[1].details
 ); */
 
-function figureThisOut(main, data) {
+function createTitle(text) {
+  const title = document.createElement("h2");
+  const titleText = document.createTextNode(text);
+  title.appendChild(titleText);
+  return title;
+}
+
+function createDescription(text) {
+  const description = document.createElement("p");
+  const descriptionText = document.createTextNode(text);
+  description.appendChild(descriptionText);
+  return description;
+}
+
+function createAudit(main, data) {
   if (!data) return;
 
-  console.log(data);
+  // console.log(data);
 
-  const title = document.createElement("h2");
-  const titleText = document.createTextNode(main.title);
-  title.appendChild(titleText);
-
-  const description = document.createElement("p");
-  const descriptionText = document.createTextNode(main.description);
-  description.appendChild(descriptionText);
+  const title = createTitle(main.title);
+  const description = createDescription(main.description);
 
   let headerKeys = [];
   let tableHead = [];
