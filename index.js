@@ -47,9 +47,29 @@ initialAudits.forEach((audit) => {
   audit.matchedAudits.sort((a, z) => a.score - z.score);
 });
 
-// console.log(initialAudits);
+console.log(initialAudits);
 
-initialAudits.forEach((auditCategory) => {
+/* 
+
+High impact | 30, 25 = 55%
+
+Med impact | 15, 10 = 25%
+
+total blocking time - 30
+largest contentful paint - 25
+cumulative layout shift - 15
+first contentful paint - 10
+
+
+Total Blocking Time	30%
+Largest Contentful Paint	25%
+Cumulative Layout Shift	25%
+First Contentful Paint	10%
+Speed Index	10%
+
+*/
+
+initialAudits.forEach((auditCategory, index) => {
   auditCategory.matchedAudits.forEach((audit) => {
     if (accumulatedAudits.indexOf(audit.id) === -1) {
       accumulatedAudits.push(audit.id);
@@ -95,6 +115,9 @@ function createAudit(main, data) {
   if (!data) return;
 
   // console.log(data);
+
+  const tableWrapper = document.createElement("div");
+  tableWrapper.classList.add("table-wrapper");
 
   const title = createTitle(main.title);
   const description = createDescription(main.description);
@@ -188,6 +211,7 @@ function createAudit(main, data) {
   }
 
   let table = document.createElement("table");
+  table.classList.add("styled-table");
   let tableTitles = Object.values(tableHead);
 
   generateTable(
@@ -272,9 +296,10 @@ function createAudit(main, data) {
   }
 
   // document.body.append(table);
-  container.append(title);
-  container.append(description);
-  container.append(table);
+  tableWrapper.append(title);
+  tableWrapper.append(description);
+  tableWrapper.append(table);
+  container.append(tableWrapper);
 }
 
 /************** TYPES *************/
