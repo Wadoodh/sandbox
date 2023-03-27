@@ -44,12 +44,12 @@ async function getAuditData() {
 
   console.log("Loading...");
 
-  /* const { data } = await axios.get(
-      "https://api-for-webflow.autocode.dev/auditmywebflowsite@dev/",
-      { params: { website: websiteToSearch.value } }
-    );
-  
-    console.log(data); */
+  const { data } = await axios.get(
+    "https://api-for-webflow.autocode.dev/auditmywebflowsite@dev/",
+    { params: { website: websiteInput.value } }
+  );
+
+  console.log(data);
 }
 
 /* 
