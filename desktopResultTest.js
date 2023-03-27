@@ -1,4 +1,4 @@
-export const result = {
+export const desktopResultTest = {
   captchaResult: "CAPTCHA_NOT_NEEDED",
   kind: "pagespeedonline#result",
   id: "https://webflow.com/",

@@ -31,13 +31,19 @@ p {
   margin-top: 10px;
 }
 
+.table-wrapper {
+  margin-bottom: 40px;
+}
+
+.container {
+  max-width: 1040px;
+}
+
 .styled-table {
   border-collapse: collapse;
-  /* margin: 25px 0; */
   font-size: 0.9rem;
   font-family: sans-serif;
-  min-width: 600px;
-  max-width: 1000px;
+  width: 100%;
   border: 1px solid #ddd;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.01);
 }
@@ -46,12 +52,13 @@ p {
   background-color: #ddd;
   color: #000;
   text-align: left;
+  white-space: nowrap;
 }
 
 .styled-table th,
 .styled-table td {
   padding: 12px 15px;
-  word-wrap: break-word;
+  word-break: break-all;
 }
 
 .styled-table tbody tr {
@@ -69,14 +76,6 @@ p {
 .styled-table tbody tr.active-row {
   font-weight: bold;
   color: #ddd;
-}
-
-.table-wrapper {
-  margin-bottom: 50px;
-}
-
-.container {
-  max-width: 1040px;
 }
 
 /*
